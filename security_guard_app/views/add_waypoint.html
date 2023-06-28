@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"
+        />
+        <title>AddWayPoint</title>
+        <style>
+            #mapa {
+                width: auto;
+                height: 200px;
+            }
+            .leaflet-container {
+                font-size: 1rem;
+            }
+        </style>
+    </head>
+
+    <body class="bg-[#ebebf7]">
+        <div
+            class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8"
+        >
+            <div class="sm:mx-auto sm:w-full sm:max-w-md">
+                <img
+                    class="mx-auto h-12 w-auto"
+                    src="../static/pa_icon_square.svg"
+                    alt="Your Company"
+                />
+                <h2
+                    class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900"
+                >
+                    Add Waypoint
+                </h2>
+                <h2
+                    class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900"
+                >
+                    Agregar un Waypoint
+                </h2>
+            </div>
+
+            <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+                <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+                    <form
+                        method="POST"
+                        class="space-y-6"
+                        action="{{ url_for('app_views.add_waypoint') }}"
+                    >
+                        {{ waypoint_form.csrf_token }}
+                        <div class="mb-4">
+                            {{ waypoint_form.name.label(class='block text-sm
+                            font-medium text-gray-700') }}
+                            <div class="mt-1">
+                                {{ waypoint_form.name(class='block w-full
+                                appearance-none rounded-md border
+                                border-gray-300 px-3 py-2 placeholder-gray-400
+                                shadow-sm focus:border-indigo-500
+                                focus:outline-none focus:ring-indigo-500
+                                sm:text-sm') }}
+                            </div>
+                            {{ waypoint_form.lat }} {{ waypoint_form.lon }}
+                        </div>
+                        <div class="folium-map" id="mapa"></div>
+                        <!-- <div id="map-container">{{ mapa|safe }}</div> -->
+                        <div class="flex justify-end">
+                            {{ waypoint_form.submit(class='flex w-full
+                            justify-center text-[#282748] rounded-md border
+                            border-transparent bg-[#f6c042] py-2 px-4 text-sm
+                            font-medium shadow-sm hover:bg-[#282748]
+                            hover:text-[#ebebf7] focus:outline-none focus:ring-2
+                            focus:ring-indigo-500 focus:ring-offset-2') }}
+                        </div>
+                    </form>
+                    <p class="mt-10 text-center text-sm text-gray-500">
+                        {% if qr_img %}
+                        <img
+                            src="{{ url_for('static', filename='qr/' + qr_img) }}"
+                            alt="QR Code"
+                        />
+
+                        {% endif %}
+                    </p>
+                </div>
+                <a
+                    class="absolute top-4 right-4 bg-[#f6c042] text-[#282748] rounded-md px-4 py-2 text-sm font-medium shadow-sm hover:bg-[#282748] hover:text-[#ebebf7] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    href="{{url_for('app_views.index')}}"
+                >
+                    Volver al inicio</a
+                >
+            </div>
+        </div>
+        <script>
+            var map = L.map("mapa", {
+                center: [-25.798631587777972, -56.4351209743452],
+                crs: L.CRS.EPSG3857,
+                zoom: 17,
+                zoomControl: true,
+                preferCanvas: true,
+            });
+
+            var tile_layer_1d3dd3b1c5b7905134b73143db2be6ff = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        'Data by \u0026copy; \u003ca target="_blank" href="http://openstreetmap.org"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target="_blank" href="http://www.openstreetmap.org/copyright"\u003eODbL\u003c/a\u003e.',
+                    detectRetina: false,
+                    maxNativeZoom: 18,
+                    maxZoom: 18,
+                    minZoom: 12,
+                    noWrap: false,
+                    opacity: 1,
+                    subdomains: "abc",
+                    tms: false,
+                }
+            ).addTo(map);
+
+            var marker = L.marker([-25.798631587777972, -56.4351209743452], {
+                autoPan: true,
+                draggable: true,
+            }).addTo(map);
+
+            function onMarkerMove(e) {
+                var lat = e.target.getLatLng().lat;
+                var lon = e.target.getLatLng().lng;
+
+                document.getElementById("lat").value = lat;
+                document.getElementById("lon").value = lon;
+            }
+
+            marker.on("dragend", onMarkerMove);
+
+            document
+                .getElementsByClassName(
+                    "leaflet-control-attribution leaflet-control"
+                )
+                .item(0).style.display = "none";
+        </script>
+    </body>
+</html>

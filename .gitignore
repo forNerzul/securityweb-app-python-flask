@@ -142,4 +142,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+#QRCode Images Gerenated
+/security_guard_app/static/qr/*.png
+
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Flask,Python

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://unpkg.com/html5-qrcode"
+            type="text/javascript"
+        ></script>
+        <title>Cam</title>
+    </head>
+    <body class="bg-[#ebebf7]">
+        <div class="flex flex-col justify-center text-center">
+            <div class="sm:mx-auto sm:w-full sm:max-w-md mt-6">
+                <div class="sm:mx-auto sm:w-full sm:max-w-md">
+                    <img
+                        class="mx-auto h-12 w-auto"
+                        src="../static/pa_icon_square.svg"
+                        alt="Your Company"
+                    />
+                </div>
+            </div>
+            <div class="w-3/4 m-auto mt-8">
+                <p>
+                    Escanea el codigo QR del punto de control donde te
+                    encuentras.
+                </p>
+            </div>
+            <div class="flex justify-center mt-8">
+                <div class="">
+                    <div id="reader"></div>
+                    <div id="result"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const scanner = new Html5QrcodeScanner("reader", {
+                qrbox: {
+                    width: 250,
+                    height: 250,
+                },
+                fps: 20,
+            });
+
+            scanner.render(success, error);
+
+            function success(result) {
+                document.getElementById("result").innerHTML = `
+                <h2> Escaneado con Exito! </h2>
+                <img class="mt-8" src="{{ url_for('static', filename="pinguino_bailando.gif")}}" alt="Pinguino Bailando" />
+                <p><a class="flex w-full justify-center text-[#282748] rounded-md border border-transparent bg-[#f6c042] mt-8 py-2 px-4 text-sm font-medium shadow-sm hover:bg-[#282748] hover:text-[#ebebf7] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" href="${result}">CheckIn!</a></p>
+                `;
+                console.log(result);
+                scanner.clear();
+                document.getElementById("reader").remove();
+                window.Location.href = result;
+            }
+
+            function error(err) {
+                document.getElementById("result").innerHTML = `
+                <h2> Aun no detecte nada! </h2>
+                `;
+                console.error(err);
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>Home</title>
+        <style>
+            /* Estilos personalizados para la vista móvil */
+            @media (max-width: 640px) {
+                .content-container {
+                    padding: 1rem;
+                }
+                .button-container {
+                    flex-direction: column;
+                }
+            }
+        </style>
+    </head>
+    <body class="bg-[#ebebf7]">
+        <div class="flex flex-col justify-center text-center">
+            <div>
+                <!-- Agregar el botón Admin Panel en la esquina superior derecha -->
+                {% if current_user.role == "admin" %}
+                <a
+                    href="{{ url_for('app_views.admin_panel') }}"
+                    class="absolute top-4 right-4 bg-[#f6c042] text-[#282748] rounded-md px-4 py-2 text-sm font-medium shadow-sm hover:bg-[#282748] hover:text-[#ebebf7] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                    Admin Panel
+                </a>
+                {% endif %}
+                <!-- Fin del botón Admin Panel -->
+                <a
+                    href="{{ url_for('app_views.logout') }}"
+                    class="absolute top-4 right-36 bg-[#f6c042] text-[#282748] rounded-md px-4 py-2 text-sm font-medium shadow-sm hover:bg-[#282748] hover:text-[#ebebf7] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    >Log Out</a
+                >
+            </div>
+
+            <div class="sm:mx-auto sm:w-full sm:max-w-md mt-24">
+                <div class="sm:mx-auto sm:w-full sm:max-w-md">
+                    <img
+                        class="mx-auto h-12 w-auto"
+                        src="../static/pa_icon_square.svg"
+                        alt="Your Company"
+                    />
+                </div>
+            </div>
+            <div class="w-3/4 mx-auto mt-12 content-container">
+                <h1 class="text-4xl">
+                    Hola
+                    <p class="font-semibold m-6">{{ current_user.name}}</p>
+                    Bienvenido al sistema de control
+                </h1>
+                <h2 class="my-8 text-xl">Instrucciones:</h2>
+                <p>
+                    Al seleccionar el botón EMPEZAR, podrás ir marcando los
+                    puntos definidos en el sitio utilizando los botones
+                    correspondientes. Presiona el botón de salir para cerrar tu
+                    sesión y poder ingresar nuevamente en tu siguiente
+                    recorrido.
+                </p>
+            </div>
+            <div class="flex justify-center items-center mt-6 button-container">
+                <div class="m-2">
+                    <a
+                        href="{{ url_for('app_views.cam') }}"
+                        class="w-48 bg-[#f6c042] text-[#282748] rounded-md py-2 px-4 text-sm font-medium shadow-sm hover:bg-[#282748] hover:text-[#ebebf7] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        >Empezar</a
+                    >
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
